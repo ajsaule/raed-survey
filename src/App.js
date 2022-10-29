@@ -2,6 +2,7 @@ import React from 'react'
 
 import * as Survey from 'survey-react'
 import showdown from 'showdown'
+import axios from 'axios'
 
 import 'survey-react/defaultV2.css'
 import 'survey-react/modern.css'
@@ -97,7 +98,8 @@ function App() {
           },
         ],
       },
-      { // Page 3 
+      {
+        // Page 3
         questions: [
           {
             type: 'radiogroup',
@@ -128,7 +130,8 @@ function App() {
           },
         ],
       },
-      { // Page 4
+      {
+        // Page 4
         questions: [
           {
             type: 'radiogroup',
@@ -184,7 +187,8 @@ function App() {
           },
         ],
       },
-      { // Page 6
+      {
+        // Page 6
         questions: [
           {
             type: 'comment',
@@ -224,6 +228,32 @@ function App() {
 
   survey.onComplete.add(function (sender) {
     console.log('Result JSON:\n' + JSON.stringify(sender.data, null, 3))
+
+    axios({
+      url:
+        window.location.protocol === 'http:'
+          ? 'http://localhost:3000/api/sendMail'
+          : 'https://raed-survey.vercel.app/api/sendMail',
+      method: 'POST',
+      data: JSON.stringify(sender.data, null, 3),
+    })
+      .then((res) => {
+        console.log(res.data)
+      })
+      .catch((error) => {
+        if (error.response) {
+          // Request made and server responded
+          console.log(error.response.data)
+          console.log(error.response.status)
+          console.log(error.response.headers)
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.log(error.request)
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message)
+        }
+      })
   })
   return <Survey.Survey model={survey} />
 }
