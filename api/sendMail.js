@@ -23,8 +23,9 @@ const handler = async (req, res) => {
    acteurs,
   } = req.body
 
-  const emails = [
-    {
+  console.log(req)
+
+  const msg = {
       to: 'andrejsaule8@gmail.com',
       from: 'andrejsaule8@gmail.com',
       subject: '🚨 Raed Survey',
@@ -67,28 +68,14 @@ const handler = async (req, res) => {
         <h4>Qui sont les acteurs impliqués dans ce projet? Quelles seront les personnes impactées par ce projet?</h4>
         ${acteurs}
       `,
-    },
-    // {
-    //   to: 'info@athanspainting.com.au',
-    //   from: 'andrejsaule8@gmail.com',
-    //   subject: '🚨 🔔 Athans Painting Website Enquiry',
-    //   html: `
-    //           Name: ${nameContents} <br>
-    //           Email: ${emailContents} <br>
-    //           Contact: ${mobileContents} <br>
-    //           Address: ${addressContents || 'Not provided'} <br>
-    //           Postcode: ${postcodeContents || 'Not provided'} <br>
-    //           Suburb: ${suburbContents || 'Not provided'} <br>
-    //           Message: ${messageContents} <br>
-    //           `,
-    // },
-  ]
+    }
+
   if (
     req.headers.referer === 'https://raed-survey.vercel.app/' ||
     req.headers.referer === 'http://localhost:3002'
   ) {
     try {
-      await sgMail.send(emails)
+      await sgMail.send(msg)
       res.send(req.Headers)
       res.status(204).end()
     } catch (err) {
