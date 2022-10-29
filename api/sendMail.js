@@ -3,34 +3,33 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 const handler = async (req, res) => {
   const {
-   nom,
-   age,
-   presentezVous,
-   votreEnvies,
-   professionnelle,
-   objectifs,
-   demarcheEnterpeneuriale,
-   aucun,
-   lesImprevus,
-   caMeFrustre,
-   lincertitude,
-   toutPrevenir,
-   votreEnvieDeux,
-   vosObjectifs,
-   etRessources,
-   indicateurs,
-   tachesEffectuer,
-   acteurs,
+    nom,
+    age,
+    presentezVous,
+    votreEnvies,
+    professionnelle,
+    objectifs,
+    demarcheEnterpeneuriale,
+    aucun,
+    lesImprevus,
+    caMeFrustre,
+    lincertitude,
+    toutPrevenir,
+    votreEnvieDeux,
+    vosObjectifs,
+    etRessources,
+    indicateurs,
+    tachesEffectuer,
+    acteurs,
   } = req.body
 
   console.log(req)
 
   const msg = {
-      to: 'andrejsaule8@gmail.com',
-      from: 'andrejsaule8@gmail.com',
-      subject: '🚨 Raed Survey',
-      html: 
-      `
+    to: 'andrejsaule8@gmail.com',
+    from: 'andrejsaule8@gmail.com',
+    subject: '🚨 Raed Survey',
+    html: `
         <h4>Nom:</h4>
         ${nom}
         <h4>Âge:</h4>
@@ -68,12 +67,9 @@ const handler = async (req, res) => {
         <h4>Qui sont les acteurs impliqués dans ce projet? Quelles seront les personnes impactées par ce projet?</h4>
         ${acteurs}
       `,
-    }
+  }
 
-  if (
-    req.headers.referer === 'https://raed-survey.vercel.app/' ||
-    req.headers.referer === 'http://localhost:3002'
-  ) {
+  if (req.headers.referer === 'https://raed-survey.vercel.app/') {
     try {
       await sgMail.send(msg)
       res.send(req.Headers)
@@ -91,7 +87,6 @@ const allowCors = (fn) => async (req, res) => {
     'Access-Control-Allow-Origin',
     'https://raed-survey.vercel.app/'
   )
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3002')
 
   res.setHeader(
     'Access-Control-Allow-Methods',
