@@ -280,7 +280,7 @@ function App() {
         },
         {
           type: 'checkbox',
-          name: 'Votre démarche entrepreneuriale',
+          name: '3. Votre démarche entrepreneuriale',
           description: {
             fr: 'Dans quelle démarche entrepreneuriale souhaitez vous vous lancer ? \t\t\t\t\t\n',
           },
@@ -2460,13 +2460,13 @@ function App() {
 
   const survey = new Survey.Model(surveyJSON)
 
-  const converter = new showdown.Converter()
-  survey.onTextMarkdown.add(function (survey, options) {
-    let str = converter.makeHtml(options.text)
-    str = str.substring(3)
-    str = str.substring(0, str.length - 4)
-    options.html = str
-  })
+  // const converter = new showdown.Converter()
+  // survey.onTextMarkdown.add(function (survey, options) {
+  //   let str = converter.makeHtml(options.text)
+  //   str = str.substring(3)
+  //   str = str.substring(0, str.length - 4)
+  //   options.html = str
+  // })
 
   survey.onComplete.add(function (sender) {
     console.log('Result JSON:\n' + JSON.stringify(sender.data, null, 3))
