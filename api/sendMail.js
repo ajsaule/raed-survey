@@ -69,7 +69,7 @@ const handler = async (req, res) => {
       `,
   }
 
-  if (req.headers.referer === 'https://raed-survey.vercel.app/') {
+  // if (req.headers.referer === 'https://raed-survey.vercel.app/') {
     try {
       await sgMail.send(msg)
       res.send(req.Headers)
@@ -78,15 +78,16 @@ const handler = async (req, res) => {
       console.log('err123', err)
       res.status(500)
     }
-  }
+  // }
 }
 
 const allowCors = (fn) => async (req, res) => {
   res.setHeader('Access-Control-Allow-Credentials', true)
-  res.setHeader(
-    'Access-Control-Allow-Origin',
-    'https://raed-survey.vercel.app/'
-  )
+  // res.setHeader(
+  //   'Access-Control-Allow-Origin',
+  //   'https://raed-survey.vercel.app/'
+  // )
+  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3002");
 
   res.setHeader(
     'Access-Control-Allow-Methods',
