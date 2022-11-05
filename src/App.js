@@ -7,7 +7,6 @@ import {
 } from 'react-router-dom'
 
 import * as Survey from 'survey-react'
-import jsonToHtmlForm from 'json-to-html-form'
 import JSONTable from 'simple-json-table'; 
 // import showdown from 'showdown'
 // import axios from 'axios'
@@ -2290,25 +2289,31 @@ function App() {
   const Intro = () => (
     <div className="welcome-msg">
       <h1>Welcome</h1>
-      <Link to="/cadrage">
+      <Link to="/survey">
         <button className="next-button">Start survey</button>
       </Link>
     </div>
   )
 
-  const Final = () => (
-    <div className="final-msg">
-      <h1>You are finished</h1>
-      <h4>Here are your answers</h4>
-      {/* <div dangerouslySetInnerHTML={{__html: answers}} /> */}
-      <JSONTable source={answers} />
-    </div>
-  )
+  const Final = () => {
+
+    return (
+      <div className="final-msg">
+        <h1>You are finished</h1>
+        <h1>Thank you so much for filling out our survey!</h1>
+        <h3>Here are your answers</h3>
+        <div style={{ marginBottom: 35, maxWidth: 800 }}>
+          <JSONTable source={answers} />
+        </div>
+        <button className="next-button" onClick={() => window.print()}>Download as PDF</button>
+      </div>
+    )
+  }
 
 
   return (
     <Routes>
-      <Route path="/cadrage" element={<Survey.Survey model={survey} />} />
+      <Route path="/survey" element={<Survey.Survey model={survey} />} />
       <Route path="/final" element={<Final />} />
       <Route path="/" element={<Intro />} />
     </Routes>
