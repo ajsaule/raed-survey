@@ -2280,10 +2280,7 @@ function App() {
     // setAnswers(jsonToHtmlForm.getForm(sender.data))
     // setAnswers([JSON.stringify(sender.data, null, 3)])
     // console.log('Result JSON:\n' + JSON.stringify(sender.data, null, 3))
-
-    setTimeout(() => {
-      navigate('/final')
-    }, 4000)
+    navigate('/final')
   })
 
   const Intro = () => (
