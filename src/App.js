@@ -1,13 +1,8 @@
 import React, { useState } from 'react'
-import {
-  Route,
-  Routes,
-  Link,
-  useNavigate,
-} from 'react-router-dom'
+import { Route, Routes, Link, useNavigate } from 'react-router-dom'
 
 import * as Survey from 'survey-react'
-import JSONTable from 'simple-json-table'; 
+import JSONTable from 'simple-json-table'
 // import showdown from 'showdown'
 // import axios from 'axios'
 
@@ -2275,11 +2270,46 @@ function App() {
   //   options.html = str
   // })
 
+  const evaluatePersonality = (obj, recursed = false) => {
+    for (let key in obj) {
+      const questionNumber = (q) =>
+        Number(q.match(/\d+/)) ? Number(q.match(/(\d+)/)[0]) : ''
+      if (
+        typeof key === 'string' &&
+        // below checks if it is the personalite questions
+        questionNumber(key) >= 5 &&
+        questionNumber(key) <= 24
+      ) {
+        // below code checks if the property is an object
+        if (typeof obj[key] === 'object') {
+          // if it is an object it will call the original function recursively to loop over the data again
+          evaluatePersonality(obj[key], true)
+        }
+      }
+      if (recursed) {
+        let personality
+        // here we are doing some conditional checks to rate the answers
+        if (questionNumber(obj[key]) === 1) personality = 'very poor'
+        if (questionNumber(obj[key]) === 2) personality = 'poor'
+        if (questionNumber(obj[key]) === 3) personality = 'not poor'
+        if (questionNumber(obj[key]) === 4) personality = 'ok'
+        if (questionNumber(obj[key]) === 5) personality = 'decent'
+        if (questionNumber(obj[key]) === 6) personality = 'getting better'
+        if (questionNumber(obj[key]) === 7) personality = 'nice'
+        if (questionNumber(obj[key]) === 8) personality = 'very nice'
+        obj[key] = personality
+      }
+    }
+    console.log('object1234', obj)
+    setAnswers(obj)
+  }
+
   survey.onComplete.add(function (sender) {
-    setAnswers(sender.data)
+    // setAnswers(sender.data)
     // setAnswers(jsonToHtmlForm.getForm(sender.data))
     // setAnswers([JSON.stringify(sender.data, null, 3)])
     // console.log('Result JSON:\n' + JSON.stringify(sender.data, null, 3))
+    evaluatePersonality(sender.data)
     navigate('/final')
   })
 
@@ -2293,8 +2323,8 @@ function App() {
   )
 
   const Final = () => {
-
     return (
+      // ! need to fix window.print() on mobile. Doesn't work on safari? Does it work on android though?
       <div className="final-msg">
         <h1>You are finished</h1>
         <h1>Thank you so much for filling out our survey!</h1>
@@ -2302,11 +2332,12 @@ function App() {
         <div style={{ marginBottom: 35, maxWidth: 800 }}>
           <JSONTable source={answers} />
         </div>
-        <button className="next-button" onClick={() => window.print()}>Download as PDF</button>
+        <button className="next-button" onClick={() => window.print()}>
+          Download as PDF
+        </button>
       </div>
     )
   }
-
 
   return (
     <Routes>
