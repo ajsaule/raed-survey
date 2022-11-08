@@ -17,6 +17,17 @@
 .sd-body__progress {
   position: sticky;
   top: 0;
+  z-index: 10000;
+}
+
+.sd-page {
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.sd-action-bar {
+  margin: 0 auto;
+  max-width: 800px;
 }
 
 .welcome-msg {
