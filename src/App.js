@@ -2271,6 +2271,13 @@ function App() {
   // })
 
   const evaluatePersonality = (obj, recursed = false) => {
+    const finalObject = {}
+    let column1 = 0
+    let column2 = 0
+    let column3 = 0
+    let column4 = 0
+    let column5 = 0
+
     for (let key in obj) {
       const questionNumber = (q) =>
         Number(q.match(/\d+/)) ? Number(q.match(/(\d+)/)[0]) : ''
@@ -2308,7 +2315,7 @@ function App() {
     // setAnswers(sender.data)
     // setAnswers(jsonToHtmlForm.getForm(sender.data))
     // setAnswers([JSON.stringify(sender.data, null, 3)])
-    // console.log('Result JSON:\n' + JSON.stringify(sender.data, null, 3))
+    console.log('Result JSON:\n' + JSON.stringify(sender.data, null, 3))
     evaluatePersonality(sender.data)
     navigate('/final')
   })
