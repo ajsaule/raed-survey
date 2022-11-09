@@ -16,6 +16,15 @@ Survey.StylesManager.applyTheme('defaultV2')
 
 function App() {
   const [answers, setAnswers] = useState('')
+  const [col1, setCol1] = useState(0)
+  const [col2, setCol2] = useState(0)
+  const [col3, setCol3] = useState(0)
+  const [col4, setCol4] = useState(0)
+  const [col5, setCol5] = useState(0)
+  const [col6, setCol6] = useState(0)
+  const [col7, setCol7] = useState(0)
+  const [col8, setCol8] = useState(0)
+  const [msg, setMsg] = useState('')
   const navigate = useNavigate()
 
   var json = {
@@ -2271,13 +2280,6 @@ function App() {
   // })
 
   const evaluatePersonality = (obj, recursed = false) => {
-    const finalObject = {}
-    let column1 = 0
-    let column2 = 0
-    let column3 = 0
-    let column4 = 0
-    let column5 = 0
-
     for (let key in obj) {
       const questionNumber = (q) =>
         Number(q.match(/\d+/)) ? Number(q.match(/(\d+)/)[0]) : ''
@@ -2294,21 +2296,54 @@ function App() {
         }
       }
       if (recursed) {
-        let personality
-        // here we are doing some conditional checks to rate the answers
-        if (questionNumber(obj[key]) === 1) personality = 'very poor'
-        if (questionNumber(obj[key]) === 2) personality = 'poor'
-        if (questionNumber(obj[key]) === 3) personality = 'not poor'
-        if (questionNumber(obj[key]) === 4) personality = 'ok'
-        if (questionNumber(obj[key]) === 5) personality = 'decent'
-        if (questionNumber(obj[key]) === 6) personality = 'getting better'
-        if (questionNumber(obj[key]) === 7) personality = 'nice'
-        if (questionNumber(obj[key]) === 8) personality = 'very nice'
-        obj[key] = personality
+        // here we are doing some conditional checks to sum the totals to each answer
+        if (questionNumber(obj[key]) === 1) setCol1(prev => prev++)
+        if (questionNumber(obj[key]) === 2) setCol2(prev => prev++)
+        if (questionNumber(obj[key]) === 3) setCol3(prev => prev++)
+        if (questionNumber(obj[key]) === 5) setCol4(prev => prev++)
+        if (questionNumber(obj[key]) === 4) setCol5(prev => prev++)
+        if (questionNumber(obj[key]) === 6) setCol6(prev => prev++)
+        if (questionNumber(obj[key]) === 7) setCol7(prev => prev++)
+        if (questionNumber(obj[key]) === 8) setCol8(prev => prev++)
       }
     }
-    console.log('object1234', obj)
-    setAnswers(obj)
+
+    if (!recursed) {
+      // change the below to set the rating on the personalities
+      if (col5 >= 10 || (col5 >= 8 && col4 >= 2)) {
+        setMsg('very nice')
+      } else if (col4 >= 10 || (col4 >= 8 && col3 >= 2)) {
+        setMsg('nice')
+      } else if (col3 >= 10 || (col3 >= 8 && col2 >= 2)) {
+        setMsg('not bad')
+      } else if (col2 >= 10 || (col2 >= 8 && col1 >= 2)) {
+        setMsg('bad')
+      } else {
+        setMsg('not enough answers selected')
+      }
+      return (
+        console.log(
+          'Scores\n',
+          'column1:',
+          col1,
+          '\ncolumn2:',
+          col2,
+          '\ncolumn3:',
+          col3,
+          '\ncolumn4:',
+          col4,
+          '\ncolumn5:',
+          col5,
+          '\ncolumn6:',
+          col6,
+          '\ncolumn7:',
+          col7,
+          '\ncolumn8:',
+          col8
+        ),
+        console.log(msg)
+      )
+    }
   }
 
   survey.onComplete.add(function (sender) {
@@ -2336,9 +2371,10 @@ function App() {
         <h1>You are finished</h1>
         <h1>Thank you so much for filling out our survey!</h1>
         <h3>Here are your answers</h3>
-        <div style={{ marginBottom: 35, maxWidth: 800 }}>
+        <h5>Your personality is: {msg}</h5>
+        {/* <div style={{ marginBottom: 35, maxWidth: 800 }}>
           <JSONTable source={answers} />
-        </div>
+        </div> */}
         <button className="next-button" onClick={() => window.print()}>
           Download as PDF
         </button>
